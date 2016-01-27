@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html>
+	<head>		
+		<meta charset="UTF-8">
+		<title>Simple HTML5 - Compliant web page</title>
+		<style>
+			#p1 {
+				background-color: salmon;
+				font-family: Helvetica, Arial;
+			}
+
+			.box {
+				background-color: white;
+				width: 50%;
+				transition: 0.25s all;
+				margin: 0 auto;
+				box-shadow: 1px 1px 4px black;
+			}
+
+			.box:hover {
+				background-color: cornsilk;
+				width:40%;
+			}
+
+			.smaller {
+				width: 300px;
+			}
+
+			#card {
+				background-color: white;
+				text-align: center;
+				padding: 10px;
+			}
+
+			#card:hover {
+				box-shadow: 1px 1px 10px gray;
+			}
+
+			#card #pic {
+				border-radius: 10em;
+				width: 200px;
+				border: 1px solid LightGray;
+			}
+			hr {
+				width: 50%;
+				background-color: gray;
+				color: gray;
+			}
+			h1, h2, p {
+				font-family: Helvetica, Arial;
+			}
+			body {
+				background-color: Ivory;
+			}
+
+			#button {
+				position: absolute;
+				border-radius: 10em;
+				width: 50px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>IT 202 - Simple HTML5 - Compliant Web Page</h1>
+		<section class="box">
+		<h2>This is pretty cool.</h2>
+		<p>Bueller? Bueller? Bueller?</p>
+
+		<p id="p1">Colorful!</p>
+		<p></p>
+		</section>
+		<br />
+		<br />
+		<div id="card" class="box smaller">
+			<a href="https://acm.cs.uic.edu/"><img src="images/heart.jpg" alt="This is a button" id="button"/></a>
+			<img src="images/me.png" id="pic" alt="This is me!"/>
+			<br />
+			<h1>Chase Lee</h1>
+			<h2>Chase 李</h2>
+			<hr />
+			<br />
+			<p>Hello IT 202!</p>
+			<br />
+			<p><a href="https://uic.edu/">UIC</a> | <a href="http://flourishconf.com/2016">Flourish! Conference</a></p>
+		</div>
+	</body>
+</html>
