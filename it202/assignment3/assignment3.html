@@ -1,0 +1,160 @@
+<!DOCTYPE HTML>
+<html>
+	<head>		
+		<meta charset="UTF-8">
+		<title>Simple HTML5 - Compliant web page</title>
+		<style>
+			#p1 {
+				background-color: salmon;
+				font-family: Helvetica, Arial;
+			}
+
+			.box, .card {
+				background-color: white;
+				width: 80vw;
+				transition: 0.25s all;
+				margin: 0 auto;
+				box-shadow: 1px 1px 4px black;
+				padding: 1em;
+			}
+
+			.box:hover {
+				background-color: cornsilk;
+				width:40%;
+			}
+
+			.smaller {
+				width: 300px;
+			}
+
+			#card {
+				background-color: white;
+				text-align: center;
+				padding: 10px;
+			}
+
+			#card:hover {
+				box-shadow: 1px 1px 10px gray;
+			}
+
+			#card #pic {
+				border-radius: 10em;
+				width: 200px;
+				border: 1px solid LightGray;
+			}
+			hr {
+				width: 50%;
+				background-color: gray;
+				color: gray;
+			}
+			h1, h2, p {
+				font-family: Helvetica, Arial;
+			}
+			body {
+				background-color: white;
+			}
+
+			#button {
+				position: absolute;
+				border-radius: 10em;
+				width: 50px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>IT 202 - Simple Form Page</h1>
+		<br />
+		<div id="card" class="card">
+			<h2>Chase 李's Form</h2>
+			<hr />
+			<br />
+			<form onsubmit="event.preventDefault();">
+				<label for="firstName">First Name</label>
+				<input type="text" name="firstName" id="firstName" placeholder="First Name"><br />
+
+				<label for="lastName">Last Name</label>
+				<input type="text" name="lastName" id="lastName" placeholder="Last Name"><br />
+
+				<label for="email">Email</label>
+				<input type="email" name="email" id="email" placeholder="abc@uic.edu"><br />
+
+				<label for="yearInSchool">Year In School</label>
+				<select name="yearInSchool" id="yearInSchool">
+					<option value="">Select a Year</option>
+					<option value="newb">Freshmen</option>
+					<option value="someone">Sophomore</option>
+					<option value="bro">Junior</option>
+					<option value="elite">Senior</option>
+					<option value="legendary">Super Senior</option>
+				</select><br />
+
+				<label for="numberOfClasses">Number of Classes</label>
+				<input type="number" name="numberOfClasses" id="numberOfClasses" placeholder="0" min=0 max=10><br />
+
+				<label>Transportation Method</label>
+				<input type="radio" name="transportationMethod" id="tmc" value="car"><label for="tmc">Car</label><br />
+				<input type="radio" name="transportationMethod" id="tmb" value="bus"><label for="tmb">Bus</label><br />
+				<input type="radio" name="transportationMethod" id="tmt" value="train"><label for="tmt">Train</label><br />
+				<input type="radio" name="transportationMethod" id="tmw" value="walk"><label for="tmw">Walking</label><br />
+
+				<label>Preferred Foods</label>
+				<input type="checkbox" name="preferredFoods" id="pfm" value="meat"><label for="pfm">Meat</label><br />
+				<input type="checkbox" name="preferredFoods" id="pfv" value="veggie"><label for="pfv">Veggie</label><br />
+				<input type="checkbox" name="preferredFoods" id="pfc" value="candy"><label for="pfc">Candy</label><br />
+				<br />
+				<label for="comments">Comments</label><br />
+				<textarea rows="4" cols="40" name="comments" id="comments" placeholder="Type your comments here."></textarea><br />
+
+				<button onclick="submitme()">Submit!</button>
+
+
+
+			</form>
+			<br />
+			<p><a href="https://uic.edu/">UIC</a> | <a href="http://flourishconf.com/2016">Flourish! Conference</a> | <a href="https://validator.w3.org/nu/?doc=http%3A%2F%2Fclee231.github.io%2Fit202%2Fassignment3%2Fassignment3.html">Validator</a></p>
+		</div>
+		<section class="box">
+		<h2>Form Input Data</h2>
+		<div id="outputdata">
+		<p>Looks like no data has been inputted yet!</p>
+		</div>
+		</section>
+		<br />
+		<script>
+		function submitme() {
+				console.log("I clicked submit!");
+				var output = "<p><strong>First Name:</strong> " + document.getElementById("firstName").value + "</p>";
+				output += "<p><strong>Last Name:</strong> " + document.getElementById("lastName").value + "</p>";
+				output += "<p><strong>Email:</strong> " + document.getElementById("email").value + "</p>";
+				output += "<p><strong>Year In School:</strong> " + document.getElementById("yearInSchool").value + "</p>";
+				output += "<p><strong>Number Of Classes:</strong> " + document.getElementById("numberOfClasses").value + "</p>";
+				var tm = document.getElementsByName("transportationMethod");
+				output += "<p><strong>Transportation Method:</strong> ";
+				for (var i = 0; i < tm.length; i++) {
+					if (tm[i].checked) {
+						output += tm[i].value;
+					}
+				}
+				output += "</p>";
+				var pf = document.getElementsByName("preferredFoods");
+				output += "<p><strong>Preferred Foods:</strong> ";
+				for (var i = 0; i < pf.length; i++) {
+					if (pf[i].checked) {
+						output += pf[i].value;
+						if (i != (pf.length-1)) {
+							output += ", ";
+						}
+					}
+				}
+				output += "</p>";
+//				output += "<p><strong>Preferred Foods:</strong> " + document.getElementById("preferredFoods").value + "</p>";
+				output += "<p><strong>Comments:</strong> " + document.getElementById("comments").value + "</p>";
+				var outdiv = document.getElementById("outputdata").innerHTML = output;
+		}
+
+		document.addEventListener("DOMContentLoaded", function(event) { 
+ 			console.log("I need to do stuff....");
+		});
+		</script>
+	</body>
+</html>
