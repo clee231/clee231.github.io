@@ -59,6 +59,10 @@
 				border-radius: 10em;
 				width: 50px;
 			}
+
+			.blue {
+				background-color: #3DCFFF;
+			}
 		</style>
 	</head>
 	<body>
@@ -121,12 +125,28 @@
 		</section>
 		<br />
 		<script>
+		function yearInSchoolLookup(name) {
+			switch(name) {
+				case "newb":
+					return "Freshman";
+				case "someone":
+					return "Sophomore";
+				case "bro":
+					return "Junior";
+				case "elite":
+					return "Senior";
+				case "legendary":
+					return "Super Senior";
+			}
+			return "N/A";
+		}
+
 		function submitme() {
 				console.log("I clicked submit!");
 				var output = "<p><strong>First Name:</strong> " + document.getElementById("firstName").value + "</p>";
 				output += "<p><strong>Last Name:</strong> " + document.getElementById("lastName").value + "</p>";
 				output += "<p><strong>Email:</strong> " + document.getElementById("email").value + "</p>";
-				output += "<p><strong>Year In School:</strong> " + document.getElementById("yearInSchool").value + "</p>";
+				output += "<p><strong>Year In School:</strong> " + yearInSchoolLookup(document.getElementById("yearInSchool").value) + "</p>";
 				output += "<p><strong>Number Of Classes:</strong> " + document.getElementById("numberOfClasses").value + "</p>";
 				var tm = document.getElementsByName("transportationMethod");
 				output += "<p><strong>Transportation Method:</strong> ";
@@ -154,6 +174,13 @@
 
 		document.addEventListener("DOMContentLoaded", function(event) { 
  			console.log("I need to do stuff....");
+			var firstname = document.getElementById("firstName");
+			firstname.onclick = function(e) {
+				firstname.className += " blue";
+			}
+			firstname.onblur = function() {
+				firstname.className = "";
+			}
 		});
 		</script>
 	</body>
