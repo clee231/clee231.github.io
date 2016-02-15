@@ -182,12 +182,10 @@
 				output += "<p><strong>Preferred Foods:</strong> ";
 				for (var i = 0; i < pf.length; i++) {
 					if (pf[i].checked) {
-						output += pf[i].value;
-						if (i != (pf.length-1)) {
-							output += ", ";
-						}
+						output += pf[i].value + ", ";
 					}
 				}
+				output = output.substring(0,output.length-2);
 				output += "</p>";
 //				output += "<p><strong>Preferred Foods:</strong> " + document.getElementById("preferredFoods").value + "</p>";
 				output += "<p><strong>Comments:</strong> " + document.getElementById("comments").value + "</p>";
