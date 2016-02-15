@@ -63,6 +63,24 @@
 			.blue {
 				background-color: #3DCFFF;
 			}
+
+			label {
+				display: inline-block;
+				width: 200px;
+				margin-left: 5px;
+			}
+
+			input {
+				display: inline-block;
+			}
+
+			.rpane {
+				display: inline-block;
+			}
+
+			select {
+				font-size: 1em;
+			}
 		</style>
 	</head>
 	<body>
@@ -96,15 +114,19 @@
 				<input type="number" name="numberOfClasses" id="numberOfClasses" placeholder="0" min=0 max=10><br />
 
 				<label>Transportation Method</label>
+				<div class="rpane">
 				<input type="radio" name="transportationMethod" id="tmc" value="car"><label for="tmc">Car</label><br />
 				<input type="radio" name="transportationMethod" id="tmb" value="bus"><label for="tmb">Bus</label><br />
 				<input type="radio" name="transportationMethod" id="tmt" value="train"><label for="tmt">Train</label><br />
 				<input type="radio" name="transportationMethod" id="tmw" value="walk"><label for="tmw">Walking</label><br />
-
+				</div>
+				<br />
 				<label>Preferred Foods</label>
+				<div class="rpane">
 				<input type="checkbox" name="preferredFoods" id="pfm" value="meat"><label for="pfm">Meat</label><br />
 				<input type="checkbox" name="preferredFoods" id="pfv" value="veggie"><label for="pfv">Veggie</label><br />
 				<input type="checkbox" name="preferredFoods" id="pfc" value="candy"><label for="pfc">Candy</label><br />
+				</div>
 				<br />
 				<label for="comments">Comments</label><br />
 				<textarea rows="4" cols="40" name="comments" id="comments" placeholder="Type your comments here."></textarea><br />
@@ -175,7 +197,7 @@
 		document.addEventListener("DOMContentLoaded", function(event) { 
  			console.log("I need to do stuff....");
 			var firstname = document.getElementById("firstName");
-			firstname.onclick = function(e) {
+			firstname.onclick = function() {
 				firstname.className += " blue";
 			}
 			firstname.onblur = function() {
