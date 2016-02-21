@@ -5,12 +5,15 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chicago Crime Apps | IT202</title>
-    <link rel="stylesheet" href="css/foundation.css" />
-    <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.1.2/foundation.min.css" />
 	<style>
 		#map {
 			width: 100%;
 			height: 300px;
+		}
+
+		.text-red {
+			color: #FF0000;
 		}
 	</style>
   </head>
@@ -25,8 +28,7 @@
     <div class="row">
       <div class="large-12 columns">
         <div class="callout large">
-			<div id="map">No data has been loaded.</div>
-
+			<div id="map"></div>
 	    </div>
       </div>
     </div>
@@ -40,19 +42,21 @@
           <div class="row">
             <div class="large-12 columns">
               <label>Year</label>
-              <input type="text" name="year" id="year" value="2016" />
+              <input type="number" name="year" id="year" value="2016" min="2001" max="2016" required/>
 			</div><!-- large-12 columns-->
 		  </div><!-- row -->
           <div class="row">
             <div class="large-12 columns">
               <label>Primary Type</label>
-              <input type="text" id="primary_type" name="primary_type" value="BURGLARY" readonly />
+			  <select id="pTypes" required>
+				<option value="">Loading...</option>
+			  </select>
 			</div><!-- large-12 columns-->
 		  </div><!-- row -->
 		  <div class="row">
             <div class="large-12 columns">
               <label>Ward</label>
-              <input type="text" id="ward" name="ward" value="11" />
+              <input type="number" id="ward" name="ward" value="25" min="1" max="50" required />
 			</div><!-- large-12 columns-->
 		  </div><!-- row -->
 		  <div class="row">
@@ -63,29 +67,167 @@
 		
 		</form>
       </div>
+	  <div class="medium-4 columns">
+		<div id="valid-box" class="callout secondary">
+			<h5>Validation:</h5>
+			<ul id="valid-list">
+			</ul>
+		</div>
+
+		<div id="history-box" class="callout secondary">
+			<h5>History:</h5>
+			<ul id="history-list">
+			</ul>
+		</div>
+	  </div>
     </div>
 
-    <script src="js/vendor/jquery.min.js"></script>
-    <script src="js/vendor/what-input.min.js"></script>
-    <script src="js/foundation.min.js"></script>
-    <script src="js/app.js"></script>
+	<div class="row">
+		<footer class="small-12 columns">
+			<p><a href="https://uic.edu/">UIC</a> | <a href="http://flourishconf.com/2016">Flourish! Conference</a> | <a href="https://validator.w3.org/nu/?doc=http%3A%2F%2Fclee231.github.io%2Fit202%2Fassignment4%2Fassignment4.html">Validator</a></p>
+		</footer>
+	</div>
+
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/foundation/6.1.2/foundation.min.js"></script>
 	<script src="https://maps.googleapis.com/maps/api/js"></script>
 	<script>
 		$(document).ready(function() {
+			var year = $("#year").val();
+			var type = $("#pTypes").val();
+			var ward = $("#ward").val();
+
 			$("#submit").click (function() {
 				var year = $("#year").val();
-				var type = $("#primary_type").val();
+				var type = $("#pTypes").val();
 				var ward = $("#ward").val();
-				getCrimeData(year, type, ward);
+				if(validate(year, type, ward)) {
+					getCrimeData(year, type, ward);
+				}
 			});
+			// Check to see if we can get Primary Types for the newly inputted year.
+			$("#year").change(function() {
+				var year = $("#year").val();
+				$("#pTypes").empty();
+				if (validateYear(year)) {
+					getPTypes(year);
+				}
+			});
+
+			$("#ward").change(function() {
+			// Why am I redeclaring this? because old vars are no longer valid.
+			// State changes have not been reflected in the old variables.
+				var year = $("#year").val();
+				var type = $("#pTypes").val();
+				var ward = $("#ward").val();
+				validate(year, type, ward);
+			});
+
+			$("#pTypes").change(function() {
+				var year = $("#year").val();
+				var type = $("#pTypes").val();
+				var ward = $("#ward").val();
+				validate(year, type, ward);
+			});
+			// Run the below on page load
+			
+			// We require at least the year to be correct to retrieve Primary Type.
+			if (validateYear(year)) {
+				getPTypes(year);
+			}else {
+				$("#pTypes").empty(); // Remove loading text or old data.
+			}
+			logme("No map data has been loaded.");
+			validate(year, type, ward); // Run again for submitBtn state.
+
 		});
 		
+		function validateYear(year) {
+			var element = $("#valid-list");
+			var submitbtn = $("#submit");
+			if (year == null) {
+				return false;
+			}
+			if (year == null || (year < 2001 || year > 2016)) {
+				element.append("<li>Year must be between 2001 and 2016 inclusive.</li>");
+				submitbtn.prop('disabled', true);
+				return false;
+			}
+			submitbtn.prop('disabled', false);
+			return true;
+		}
+		
+		function validateType(intype) {
+			var element = $("#valid-list");
+			var submitbtn = $("#submit");
+			if (intype == null || intype == "invalid" || intype.length == 0) {
+				element.append("<li>A Primary Type must by selected.</li>");
+				submitbtn.prop('disabled', true);
+				return false;
+			}
+			submitbtn.prop('disabled', false);
+			return true;
+		}
+
+		function validateWard(inward) {
+			var element = $("#valid-list");
+			var submitbtn = $("#submit");
+			if (inward == null || (inward < 1 || inward > 50)) {
+				element.append("<li>A valid ward number must be inputted. (1-50 inclusive) </li>");
+				submitbtn.prop('disabled', true);
+				return false;
+			}
+			submitbtn.prop('disabled', false);
+			return true;
+		}
+
+		function validate(year, type, ward) {
+			var element = $("#valid-list");
+			var elembox = $("#valid-box");
+			var submitbtn = $("#submit");
+			var errcount = 0;
+			console.log("Validate called: Year: " + year + ", type: " + type + ", ward: " + ward);
+			element.empty();
+			if (!validateYear(year)) { errcount++; }
+			if (!validateType(type)) { errcount++; }
+			if (!validateWard(ward)) { errcount++; }
+
+			if(errcount == 0) {
+				elembox.removeClass("alert");
+				submitbtn.prop('disabled', false);
+				return true;
+			}else {
+				elembox.addClass("alert");
+				submitbtn.prop('disabled', true);
+				return false;
+			}
+
+		}
+		
+		function getPTypes(year) {
+			var endpoint = "https://data.cityofchicago.org/resource/ijzp-q8t2.json?$where=year=" + year + "&$select=primary_type,count%28primary_type%29&$group=primary_type"; 
+			var pTypeElement = $('#pTypes');
+			var year = $("#year").val();
+			var type = $("#pTypes").val();
+			var ward = $("#ward").val();
+			pTypeElement.empty();
+			pTypeElement.append($("<option />").text("Loading..."));
+			var ajaxreq = $.get(endpoint, function(data) {
+				pTypeElement.empty();
+				pTypeElement.append($("<option />").val("invalid").text("Select an option below"));
+				$.each(data, function() {
+					pTypeElement.append($("<option />").val(this.primary_type).text(this.primary_type));
+				});
+				validate(year, type, ward);
+			});
+		}
+
 		function displayCrimeMap (data) {
-//41.873589,-87.65325, Jane Addams Hull House
+//41.873589,-87.65325, Jane Addams Hull House at UIC
         var myLatLng = {lat: 41.873589, lng: -87.65325};
 
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 15,
+          zoom: 13,
           center: myLatLng
         });
 
@@ -113,20 +255,23 @@
         
       }
 
-var dumpdata;
-
 	  function getCrimeData(year, type, ward) {
 			var endpoint = "https://data.cityofChicago.org/resource/ijzp-q8t2.json?";
 			var queryString = "year="+year+"&primary_type="+type+"&ward="+ward;
 			var ajaxreq = $.get(endpoint+queryString, function(data) {
-				dumpdata = data;
-				console.log(dumpdata);
 				if (data.length > 0) {
 					displayCrimeMap(data);
+					logme("Map was loaded with <strong>" + data.length + "</strong> point(s).");
+				}else {
+					logme("<span class=\"text-red\">No data was returned by the server.</span> Map was left intact from previous query.");
 				}
 			});
 		}
-
+	function logme(msg) {
+		var element = $("#history-list");
+		var timenow = new Date();
+		element.prepend("<li>["+timenow.toLocaleTimeString()+"]: "+msg+"</li>");
+	}
 	</script>
   </body>
 </html>
