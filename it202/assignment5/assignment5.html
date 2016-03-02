@@ -1,0 +1,366 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chicago Crime Apps | IT202</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.1.2/foundation.min.css" />
+	<style>
+		#map {
+			width: 100%;
+			height: 300px;
+		}
+
+		.text-red {
+			color: #FF0000;
+		}
+
+		#legend-list li {
+			list-style-type: none;
+		}
+	</style>
+  </head>
+  <body>
+
+    <div class="row">
+      <div class="large-12 columns">
+        <h1>Chicago Crime Apps | IT202</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="large-12 columns">
+        <div class="callout large">
+			<div id="map"></div>
+	    </div>
+      </div>
+    </div>
+	<div class="row">
+		<div class="large-6 columns">
+			<div id="legend-box" class="callout secondary">
+				<h5>Legend:</h5>
+				<ul id="legend-list">
+				</ul>
+			</div>
+		</div>
+		<div class="large-6 columns">
+			<div id="breakdown-box" class="callout secondary">
+				<h5>Primary Type Breakdown:</h5>
+				<div id="breakdown-chart">
+				</div>
+			</div>
+		</div>
+	</div> <!-- -->
+    <div class="row">
+      <div class="large-8 medium-8 columns">
+		<hr />
+
+        <h5>Filters:</h5>
+        <form onsubmit="event.preventDefault();">
+          <div class="row">
+            <div class="large-12 columns">
+              <label>Year</label>
+              <input type="number" name="year" id="year" value="2016" min="2001" max="2016" required/>
+			</div><!-- large-12 columns-->
+		  </div><!-- row -->
+          <div class="row">
+            <div class="large-12 columns">
+              <label>Primary Type</label>
+			  <select id="pTypes" required multiple>
+				<option value="">Loading...</option>
+			  </select>
+			</div><!-- large-12 columns-->
+		  </div><!-- row -->
+		  <div class="row">
+            <div class="large-12 columns">
+              <label>Ward</label>
+              <input type="number" id="ward" name="ward" value="25" min="1" max="50" required />
+			</div><!-- large-12 columns-->
+		  </div><!-- row -->
+		  <div class="row">
+            <div class="large-12 columns">
+				<button class="medium button" id="submit">Submit</button>
+			</div><!-- large-12 columns-->
+		  </div><!-- row -->
+		
+		</form>
+      </div>
+	  <div class="medium-4 columns">
+		<div id="valid-box" class="callout secondary">
+			<h5>Validation:</h5>
+			<ul id="valid-list">
+			</ul>
+		</div>
+
+		<div id="history-box" class="callout secondary">
+			<h5>History:</h5>
+			<ul id="history-list">
+			</ul>
+		</div>
+	  </div>
+    </div>
+
+	<div class="row">
+		<footer class="small-12 columns">
+			<p><a href="https://uic.edu/">UIC</a> | <a href="http://flourishconf.com/2016">Flourish! Conference</a> | <a href="https://validator.w3.org/nu/?doc=http%3A%2F%2Fclee231.github.io%2Fit202%2Fassignment5%2Fassignment5.html">Validator</a></p>
+		</footer>
+	</div>
+
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/foundation/6.1.2/foundation.min.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script>
+		$(document).ready(function() {
+			var year = $("#year").val();
+			var type = $("#pTypes").val();
+			var ward = $("#ward").val();
+
+			$("#submit").click (function() {
+				var year = $("#year").val();
+				var type = $("#pTypes").val();
+				var ward = $("#ward").val();
+				if(validate(year, type, ward)) {
+					getCrimeData(year, type, ward);
+				}
+			});
+			// Check to see if we can get Primary Types for the newly inputted year.
+			$("#year").change(function() {
+				var year = $("#year").val();
+				$("#pTypes").empty();
+				if (validateYear(year)) {
+					getPTypes(year);
+				}
+			});
+
+			$("#ward").change(function() {
+			// Why am I redeclaring this? because old vars are no longer valid.
+			// State changes have not been reflected in the old variables.
+				var year = $("#year").val();
+				var type = $("#pTypes").val();
+				var ward = $("#ward").val();
+				validate(year, type, ward);
+			});
+
+			$("#pTypes").change(function() {
+				var year = $("#year").val();
+				var type = $("#pTypes").val();
+				var ward = $("#ward").val();
+				validate(year, type, ward);
+			});
+			// Run the below on page load
+			
+			// We require at least the year to be correct to retrieve Primary Type.
+			if (validateYear(year)) {
+				getPTypes(year);
+			}else {
+				$("#pTypes").empty(); // Remove loading text or old data.
+			}
+			logme("No map data has been loaded.");
+			validate(year, type, ward); // Run again for submitBtn state.
+
+
+			// Load the Visualization API and the corechart package.
+		    google.charts.load('current', {'packages':['corechart']});
+
+			// Set a callback to run when the Google Visualization API is loaded.
+			//google.charts.setOnLoadCallback(drawChart);
+
+
+
+		});
+		
+		function validateYear(year) {
+			var element = $("#valid-list");
+			var submitbtn = $("#submit");
+			if (year == null) {
+				return false;
+			}
+			if (year == null || (year < 2001 || year > 2016)) {
+				element.append("<li>Year must be between 2001 and 2016 inclusive.</li>");
+				submitbtn.prop('disabled', true);
+				return false;
+			}
+			submitbtn.prop('disabled', false);
+			return true;
+		}
+		
+		function validateType(intype) {
+			var element = $("#valid-list");
+			var submitbtn = $("#submit");
+			if (intype == null || intype == "invalid" || intype.length == 0) {
+				element.append("<li>A Primary Type must by selected.</li>");
+				submitbtn.prop('disabled', true);
+				return false;
+			}
+			submitbtn.prop('disabled', false);
+			return true;
+		}
+
+		function validateWard(inward) {
+			var element = $("#valid-list");
+			var submitbtn = $("#submit");
+			if (inward == null || (inward < 1 || inward > 50)) {
+				element.append("<li>A valid ward number must be inputted. (1-50 inclusive) </li>");
+				submitbtn.prop('disabled', true);
+				return false;
+			}
+			submitbtn.prop('disabled', false);
+			return true;
+		}
+
+		function validate(year, type, ward) {
+			var element = $("#valid-list");
+			var elembox = $("#valid-box");
+			var submitbtn = $("#submit");
+			var errcount = 0;
+			console.log("Validate called: Year: " + year + ", type: " + type + ", ward: " + ward);
+			element.empty();
+			if (!validateYear(year)) { errcount++; }
+			if (!validateType(type)) { errcount++; }
+			if (!validateWard(ward)) { errcount++; }
+
+			if(errcount == 0) {
+				elembox.removeClass("alert");
+				submitbtn.prop('disabled', false);
+				return true;
+			}else {
+				elembox.addClass("alert");
+				submitbtn.prop('disabled', true);
+				return false;
+			}
+
+		}
+		
+		function getPTypes(year) {
+			var endpoint = "https://data.cityofchicago.org/resource/6zsd-86xi.json?$where=year=" + year + "&$select=primary_type,count%28primary_type%29&$group=primary_type"; 
+			var pTypeElement = $('#pTypes');
+			var year = $("#year").val();
+			var type = $("#pTypes").val();
+			var ward = $("#ward").val();
+			pTypeElement.empty();
+			pTypeElement.append($("<option />").text("Loading..."));
+			var ajaxreq = $.get(endpoint, function(data) {
+				pTypeElement.empty();
+				$.each(data, function() {
+					pTypeElement.append($("<option />").val(this.primary_type).text(this.primary_type));
+				});
+				validate(year, type, ward);
+			});
+		}
+
+		function colorMarker(colors, markers, ptype) {
+			if ($.inArray(ptype, markers) == -1) {
+				return markers.push(ptype)-1;
+			}
+			return $.inArray(ptype, markers);
+		}
+
+		function displayLegend(colors, markers) {
+			var element = $("#legend-list");
+			element.empty();
+			for (var i = 0; i < markers.length; i++) {
+				element.prepend("<li><span><strong style=\"color:"+colors[i]+"\">o</strong></span> "+markers[i]+"</li>");
+			}
+
+		}
+
+		function buildAggregate(arrData) {
+			var output = {};
+			$.each(arrData, function(index, value) {
+				output[value.primary_type] = ($.isNumeric(output[value.primary_type]) ? output[value.primary_type]+1 : 1);
+			});
+			return output;
+		}
+
+        function drawChart(arrData) {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Primary Type');
+        data.addColumn('number', 'Count');
+       console.log(arrData); 
+        
+        $.each(arrData, function(i,entry) {
+		   console.log("index: " + i + "  count: " + entry);
+           data.addRow([i,parseInt(entry)]);
+        });
+
+        // Set chart options
+        var options = {'title':'Primary Type Distribution',
+                       'width':400,
+                       'height':300
+                      };
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('breakdown-chart'));
+        chart.draw(data, options);
+      }
+
+
+		function displayCrimeMap (data) {
+//41.873589,-87.65325, Jane Addams Hull House at UIC
+        var myLatLng = {lat: 41.873589, lng: -87.65325};
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 13,
+          center: myLatLng
+        });
+		var colors = ['red', 'green', 'blue', 'salmon', 'purple', 'cyan', 'yellow', 'peru', 'orange', 'tomato', 'tan', 'violet', 'sienna', 'yellowGreen', 'indigo', 'gold', 'forestGreen', 'khaki', 'lemonChiffon', 'darkSlateGray', 'darkOrchid', 'coral', 'chocolate', 'chartreuse', 'crimson', 'blanchedAlmond', 'burlyWood', 'cornflowerBlue', 'aqua', 'bisque', 'black'];
+		var markers = [];
+        $.each(data, function (i, entry) {
+              var contentString = 
+                '<h3>' + data[i].primary_type + '</h3>'
+				+ '<p><strong>Description:</strong> ' + data[i].description + '<br> <strong>Arrested:</strong> ' + data[i].arrest + '<br> <strong>Description:</strong> ' + data[i].description + '<br> <strong>Block: </strong> '
+                + data[i].block + '</p>';
+              var marker = new google.maps.Marker({
+                position: {lat: parseFloat(data[i].latitude), 
+                              lng: parseFloat(data[i].longitude)},
+			    icon: {
+				  path: google.maps.SymbolPath.CIRCLE,
+				  scale: 3,
+				  strokeColor: colors[colorMarker(colors, markers, data[i].primary_type)],
+			    },
+                map: map,
+                title: data[i].case_number
+              });
+           
+              var infowindow = new google.maps.InfoWindow({
+                  content: contentString
+              });
+
+              marker.addListener('click', function() {
+                infowindow.open(map, marker);
+              });
+        }); 
+		displayLegend(colors, markers);
+		drawChart(buildAggregate(data));
+        
+      }
+
+	  function getCrimeData(year, type, ward) {
+			var endpoint = "https://data.cityofChicago.org/resource/6zsd-86xi.json?";
+			var compiledTypeStr = "";
+			$(type).each(function(index, value) {
+				compiledTypeStr += "'" + value + "',";
+			});
+			compiledTypeStr = compiledTypeStr.substring(0,compiledTypeStr.length-1);
+			var queryString = "year="+year+"&$where=primary_type in("+compiledTypeStr+")&ward="+ward;
+			var ajaxreq = $.get(endpoint+queryString, function(data) {
+				if (data.length > 0) {
+					displayCrimeMap(data);
+					logme("Map was loaded with <strong>" + data.length + "</strong> point(s).");
+				}else {
+					logme("<span class=\"text-red\">No data was returned by the server.</span> Map was left intact from previous query.");
+				}
+			});
+		}
+	function logme(msg) {
+		var element = $("#history-list");
+		var timenow = new Date();
+		element.prepend("<li>["+timenow.toLocaleTimeString()+"]: "+msg+"</li>");
+	}
+	</script>
+  </body>
+</html>
