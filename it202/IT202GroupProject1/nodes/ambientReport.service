@@ -1,0 +1,9 @@
+[Unit]
+Description=Run Temperature and Humidity data collection job every minute and send data to Google Fusion Tables
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python2 /opt/IT202GroupProject1/nodes/server.py --noauth_local_webserver
+
+[Install]
+WantedBy=multi-user.target

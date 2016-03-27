@@ -1,0 +1,28 @@
+{
+  "name": "IT202GroupProject1",
+  "homepage": "https://github.com/M-a-c/IT202GroupProject1",
+  "authors": [
+    "Chase 李 <clee231@uic.edu>",
+	"Mac Carter <M-a-c>"
+  ],
+  "description": "",
+  "main": "index.html",
+  "moduleType": [],
+  "keywords": [
+    "school",
+    "project",
+    "temperature",
+    "sensor",
+    "jQuery",
+    "mobile"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

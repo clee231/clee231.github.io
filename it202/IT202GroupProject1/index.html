@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<!-- 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Multi-page template</title>
+	<link rel="stylesheet" href="jMobile/_assets/css/jqm-demos.css">
+	<link rel="shortcut icon" href="jMobile/favicon.ico">
+	<script src="jMobile/js/jquery.js"></script>
+	<script src="jMobile/_assets/js/index.js"></script>
+	<script src="jMobile/js/jquery.mobile-1.4.5.min.js"></script>
+ -->
+
+
+	<style type="text/css">
+	
+
+
+	.mdiv{
+		position: relative;
+		border: 1px solid #000000;
+/*		width: 100%;
+		height: 100%;*/
+		background-color: white;
+	}
+
+
+	canvas {
+	    position: absolute;
+	    top: 0px;
+	    left: 0px;
+	    width: 100%;
+	    height: 100%;
+	}
+
+	.imgDiv img{
+/*		position:absolute;*/
+		/*z-index:1;*/
+		width: 100%;
+		height: 100%;
+	}
+
+
+	</style>
+	<title>Heat Map</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/themes/Project1.css" />
+	<link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" /> 
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script> 
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript" src="RoomScript.js"></script>
+
+</head>
+
+<body>
+
+<!-- Start of first page: #one -->
+<div data-role="page" id="one">
+
+	<div data-role="header">
+		<h1>CS Space Data</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+		
+		<h3>Average Temperature: <span id="avgTemp"></span>&#176;C</h3><!--if clicked change to f or c..-->
+		<h3>Average Humidity: <span id="avgHumi"></span>%</h3>
+
+
+
+		<p>This project aims to provide real time data from the CS space.</p>
+
+
+
+		<h3> pages:</h3>
+		<p><a href="#two" class="ui-btn ui-shadow ui-corner-all">View Heat Map</a></p>
+		<p><a href="#three" class="ui-btn ui-shadow ui-corner-all">View Humidity Map</a></p>
+		<p><a href="#four" class="ui-btn ui-shadow ui-corner-all">Raw Data</a></p>
+
+	</div><!-- /content -->
+
+	<div data-role="footer" data-theme="a">
+		<h4>Mac Carter &amp; Chase Lee &copy; 2016</h4>
+	</div><!-- /footer -->
+</div><!-- /page one -->
+
+<!-- Start of second page: #two -->
+<div data-role="page" id="two" data-theme="a">
+
+	<div data-role="header">
+		<h1>Heat Map</h1>
+	</div><!-- /header -->
+		<div role="main" class="ui-content">
+
+			<div class="mdiv" id="mHeat">
+				<div class="imgDiv">
+					<img src="sele-cs-area-trace.png" alt="map">
+				</div>
+				<div class="canvasDiv">
+					<canvas id="Heat" height="3000px" width="6000px">
+					</canvas>
+				</div>
+			</div>
+
+			<script type="text/javascript">
+				var heatMap = document.getElementById("Heat");
+			</script>
+
+
+		<p><a href="#one" data-direction="reverse" class="ui-btn ui-shadow ui-corner-all ui-btn-b">Main Page</a></p>
+
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>Mac Carter &amp; Chase Lee &copy; 2016</h4>
+	</div><!-- /footer -->
+</div><!-- /page two -->
+
+
+
+
+<!-- Start of second page: #three -->
+<div data-role="page" id="three" data-theme="a">
+
+	<div data-role="header">
+		<h1>Humidity Map</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+	
+		<div class="mdiv" id="mHumidity">
+			<div class="imgDiv">
+				<img src="sele-cs-area-trace.png" alt="map">
+			</div>
+			<div class="canvasDiv">
+				<canvas id="Humidity" height="3000px" width="6000px">
+				</canvas>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var humidMap = document.getElementById("Humidity");
+		</script>
+
+		<p><a href="#one" data-direction="reverse" class="ui-btn ui-shadow ui-corner-all ui-btn-b">Main Page</a></p>
+	
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>Mac Carter &amp; Chase Lee &copy; 2016</h4>
+	</div><!-- /footer -->
+</div><!-- /page three -->
+
+
+
+<!-- Start of second page: #four -->
+<div data-role="page" id="four" data-theme="a">
+
+	<div data-role="header">
+		<h1>Raw Data</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+		<div id="noderawview">
+
+		</div>
+		<p>
+			<a href="#one" data-direction="reverse" class="ui-btn ui-shadow ui-corner-all ui-btn-b">
+				Main Page
+			</a>
+		</p>
+	</div><!-- /content -->
+
+	<div data-role="footer">
+		<h4>Mac Carter &amp; Chase Lee &copy; 2016</h4>
+	</div><!-- /footer -->
+</div><!-- /page four -->
+
+<script type="text/javascript">
+
+
+	// humidMap.fillStyle = "#FF0000";
+	// ctx.fillRect(0,0,75,75);
+	addSensor(68,1,1,"ACM");//ACM (68,1)
+	addSensor(71,2,2,"Server Room");//Server Room (71,2)
+	addSensor(72,38,3,"WiCS Room");//Wics Room (72,38)
+	addSensor(33,19,4,"CS Lounge");//CS Lounge (33,19)
+
+	console.log("here");
+	drawBoxes(80,40);
+
+	updateAll();
+	// humidMap.stroke();
+
+	// test();
+
+	// // ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+	// // ctx.fillRect(0,0,100,100);
+	// // ctx.fillStyle = "rgba(255, 0, 255, 0.5)";
+	// // ctx.fillRect(0,0,c.width,c.height);
+	// console.log("w: "+c.width);
+	// console.log("h: "+c.height);
+
+	// console.log("doc w: "+window.getComputedStyle(document.getElementById("mHeat")).width);
+	// console.log("doc h: "+$('#mHeat').height());
+	// // ctx.fillStyle = "rgba(0, 0, 255, 0.5)";
+	// // ctx.fillRect(0,0,ctx.width,ctx.height);
+
+	$(document).ready(function() {
+		console.log($( "body" ).pagecontainer("getActivePage"));
+		populateAverage();
+		google.charts.load('current', {packages: ['corechart', 'line']});
+		$( ":mobile-pagecontainer" ).on( "pagecontainershow", function( event, ui ) {
+			switch($.mobile.activePage.attr('id')) {
+				case 'four':
+					populateRawData();
+					break;
+				case 'one':
+					populateAverage();
+					break;
+			}
+		});
+	});
+
+</script>
+
+</body>
+</html>

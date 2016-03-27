@@ -1,0 +1,9 @@
+[Unit]
+Description=Run Temperature and Humidity data collection job every minute and send data to Google Fusion Tables
+
+[Timer]
+OnCalendar=*-*-* *:*:00
+Unit=ambientReport.service
+
+[Install]
+WantedBy=multi-user.target

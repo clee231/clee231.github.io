@@ -1,0 +1,6 @@
+.env
+client_secret_*.json
+*.swp
+*.swo
+*.encrypted
+*.enc
