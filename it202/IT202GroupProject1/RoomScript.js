@@ -9,6 +9,8 @@ var Vertical;
 var dx;
 var dy;
 var alpha = .5;
+var ctx1;
+var ctx2;
 
 var temp=30;
 
@@ -93,7 +95,7 @@ function interpolateHumidity(ctx,x,y){
 
 	for (var i = masterPoints.length - 1; i >= 0; i--) {
 		if (masterPoints[i].y == y/dy && masterPoints[i].x == x/dx) {
-			ctx.fillStyle = humidColorArray[masterPoints[i].tempTemperature]+","+alpha+")";
+			ctx.fillStyle = humidColorArray[masterPoints[i].tempHumidity]+","+alpha+")";
 			ctx.fillRect(x,y,dx,dy);
 			return;
 		}
@@ -122,29 +124,38 @@ function interpolateHumidity(ctx,x,y){
 }
 
 
-// function interpolateHumidity(ctx,x,y){
-// 	var tempTotalDistance=0;
+function interpolateTemperature(ctx,x,y){
+	var tempTotalDistance=0;
 
-// 	for (var i = masterPoints.length - 1; i >= 0; i--) {
-// 		if (masterPoints[i].y == y/dy && masterPoints[i].x == x/dx) {
-// 			return;
-// 		}
+	for (var i = masterPoints.length - 1; i >= 0; i--) {
+		if (masterPoints[i].y == y/dy && masterPoints[i].x == x/dx) {
+			ctx.fillStyle = humidColorArray[(Math.floor(((masterPoints[i].tempTemperature*9)/5)+32))]+","+alpha+")";
+			ctx.fillRect(x,y,dx,dy);
+			return;
+		}
 
-// 		var temp = Math.floor(distance(x/dx,y/dy,masterPoints[i].x,masterPoints[i].y));
-// 		masterPoints[i].distance = (1/temp);
-// 		tempTotalDistance += (1/temp);
-// 	}
+		var temp = Math.floor(distance(x/dx,y/dy,masterPoints[i].x,masterPoints[i].y));
+		masterPoints[i].distance = (1/(temp*temp));
+		tempTotalDistance += (1/(temp*temp));
+	}
 	
-// 	var ret=0;
-// 	// var killme=0;
-// 	for (var i = masterPoints.length - 1; i >= 0; i--) {
-// 		masterPoints[i].fraciton = (masterPoints[i].distance/tempTotalDistance);
-// 		ret += (masterPoints[i].fraciton*masterPoints[i].tempTemperature);
-// 	}
+	var ret=0;
+	// var killme=0;
+	for (var i = masterPoints.length - 1; i >= 0; i--) {
+		masterPoints[i].fraciton = (masterPoints[i].distance/tempTotalDistance);
+		ret += (masterPoints[i].fraciton*(((masterPoints[i].tempTemperature*9)/5)+32));
+	}
+	if (Math.floor(ret)>=100) {
+		ctx.fillStyle = humidColorArray[100]+","+alpha+")";
+		ctx.fillRect(x,y,dx,dy);
+	}
+	if((Math.floor(ret)/10)<10){
+		ctx.fillStyle = humidColorArray[(Math.floor(ret))]+","+alpha+")";
+		ctx.fillRect(x,y,dx,dy);
+	}
 
-// 	return ret;
-// }
-
+	// return ret;
+}
 
 function p(){
 	for (var i = masterPoints.length - 1; i >= 0; i--) {
@@ -159,6 +170,8 @@ function p(){
 }
 
 function updateAll(){
+	ctx1.clearRect(0, 0, 6000, 3000);
+	ctx2.clearRect(0, 0, 6000, 3000);
 	for (var i = masterPoints.length - 1; i >= 0; i--) {
 		// console.log(masterPoints[i]);
 		//Read new data.
@@ -177,8 +190,8 @@ function drawBoxes(horizontalSquares,VerticalSquares){
 
 function updateMap(){
 	//Updates the rest of the map.
-	var ctx1 = heatMap.getContext("2d");
-	var ctx2 = humidMap.getContext("2d");
+	ctx1 = heatMap.getContext("2d");
+	ctx2 = humidMap.getContext("2d");
 	X = horizontal;
 	Y = Vertical;
 	
@@ -194,6 +207,7 @@ function updateMap(){
 		xOffset = 0;
 		for (var i = 0; i<X; i++) {
 
+			interpolateTemperature(ctx1,xOffset,yOffset);
 			interpolateHumidity(ctx2,xOffset,yOffset);
 			// ctx2.rect(xOffset,yOffset,dx,dy);
 
