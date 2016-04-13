@@ -1,3 +1,9 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>IT202 Lab - April 13, 2016</title>
+</head>
+<body>
 <?php
     
     //Connect to the database
@@ -12,11 +18,14 @@
 
 
     //And now to perform a simple query to make sure it's working
-    $query = "SELECT * FROM users";
+    $query = "SELECT * FROM Country";
     $result = mysqli_query($connection, $query);
 
     while ($row = mysqli_fetch_assoc($result)) {
-        echo "The ID is: " . $row['id'] . " and the Username is: " . $row['username'];
+        echo "The ID is: " . $row['Code'] . " and the Country is: " . $row['Name'] . "<br />";
     }
 
 ?>
+
+</body>
+</html>

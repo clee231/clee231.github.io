@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.1.51, for pc-linux-gnu (i686)
 --
--- Host: 127.0.0.1    Database: world
+-- Host: 127.0.0.1    Database: datafest2016
 -- ------------------------------------------------------
 -- Server version	5.1.51-debug-log
 
@@ -15,9 +15,9 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-DROP SCHEMA IF EXISTS world;
-CREATE SCHEMA world;
-USE world;
+DROP SCHEMA IF EXISTS datafest2016;
+CREATE SCHEMA datafest2016;
+USE datafest2016;
 SET AUTOCOMMIT=0;
 
 --
