@@ -1,0 +1,28 @@
+{
+  "name": "p2SimpleScrollingGame",
+  "homepage": "http://clee231.github.io/it202/p2SimpleScrollingGame/game.html",
+  "authors": [
+    "Chase 李 <clee231@uic.edu>"
+  ],
+  "description": "",
+  "main": "game.html",
+  "keywords": [
+    "game",
+    "javascript",
+    "class",
+    "it202",
+    "scrolling"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jQuery": "^2.2.3"
+  }
+}
