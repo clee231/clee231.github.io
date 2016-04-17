@@ -56,24 +56,29 @@ class Board {
 	width: number;
 	height: number;
 
-	placeObj (obj:Player, x:number, y:number) {
+	public placeObj (obj:Player, x:number, y:number) {
 		this.ctx.drawImage(obj.image,x,y,obj.width,obj.height);
 		this.objlist.push([obj,x,y]);
 		console.log("Placed object");
 		console.log(this.objlist);
 	}
-	clear ()
+	public clear ()
 	{
+		console.log("clearing canvas");
 		this.ctx.clearRect(0,0, this.width, this.height);
 	}
-	redraw () 
+	public redraw () 
 	{
-		$.each(this.objlist, function(index, item) {
-			this.placeObj(this.objlist[index]);
+		console.log(this.objlist);
+		var objl = this.objlist;
+		var po = this.placeObj;
+		$.each(objl, function(index, item) {
+			po(objl[index][0], objl[index][1], objl[index][2]);
 		});
 	}
-	inputSetup ()
+	public inputSetup ()
 	{
+		var objl = this.objlist;
 	$(document).on('keypress', function (e) {
 			switch(e.keyCode) {
 				case 38:
@@ -81,15 +86,16 @@ class Board {
 					break;
 				case 40:
 					console.log("Down Arrow!");
-					console.log(this.objlist);
+					objl[0][2]--;
+					console.log(objl);
 					break;
 			}
 		});
 	}
-	update ()
+	update= () =>
 	{
-		this.clear;
-		this.redraw;
+		this.clear();
+		//this.redraw();
 		console.log("Updating!");
 	}
 }

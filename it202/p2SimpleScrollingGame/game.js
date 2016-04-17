@@ -24,6 +24,12 @@ var Player = (function () {
 }());
 var Board = (function () {
     function Board(canvas, width, height) {
+        var _this = this;
+        this.update = function () {
+            _this.clear();
+            //this.redraw();
+            console.log("Updating!");
+        };
         this.canvasDOM = document.getElementById(canvas);
         console.log(this.canvasDOM);
         this.ctx = this.canvasDOM.getContext("2d");
@@ -36,14 +42,19 @@ var Board = (function () {
         console.log(this.objlist);
     };
     Board.prototype.clear = function () {
+        console.log("clearing canvas");
         this.ctx.clearRect(0, 0, this.width, this.height);
     };
     Board.prototype.redraw = function () {
-        $.each(this.objlist, function (index, item) {
-            this.placeObj(this.objlist[index]);
+        console.log(this.objlist);
+        var objl = this.objlist;
+        var po = this.placeObj;
+        $.each(objl, function (index, item) {
+            po(objl[index][0], objl[index][1], objl[index][2]);
         });
     };
     Board.prototype.inputSetup = function () {
+        var objl = this.objlist;
         $(document).on('keypress', function (e) {
             switch (e.keyCode) {
                 case 38:
@@ -51,15 +62,11 @@ var Board = (function () {
                     break;
                 case 40:
                     console.log("Down Arrow!");
-                    console.log(this.objlist);
+                    objl[0][2]--;
+                    console.log(objl);
                     break;
             }
         });
-    };
-    Board.prototype.update = function () {
-        this.clear;
-        this.redraw;
-        console.log("Updating!");
     };
     return Board;
 }());
