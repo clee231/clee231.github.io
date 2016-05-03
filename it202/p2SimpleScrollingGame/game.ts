@@ -175,6 +175,7 @@ class Board {
     if (e.keyCode == 40) {
         //keyCode 40 is down arrow
 		boardobj.objlist[0][2]++;
+		console.log("Down arrow");
     }
     if (e.keyCode == 39) {
         //keyCode 39 is right arrow
@@ -182,6 +183,7 @@ class Board {
     if (e.keyCode == 38) {
         //keyCode 38 is up arrow
 		boardobj.objlist[0][2]--;
+		console.log("Up Arrow");
     }
 
 	}
