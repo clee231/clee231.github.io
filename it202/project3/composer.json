@@ -1,0 +1,13 @@
+{
+    "name": "clee231/project3",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Chase 李",
+            "email": "clee231@uic.edu"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^2.2"
+    }
+}

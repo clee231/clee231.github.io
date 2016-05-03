@@ -1,0 +1,23 @@
+{
+  "name": "project3",
+  "homepage": "clee231.github.io",
+  "authors": [
+    "Chase 李 <clee231@uic.edu>"
+  ],
+  "description": "",
+  "main": "index.php",
+  "moduleType": [],
+  "keywords": [
+    "project",
+    "it202"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
