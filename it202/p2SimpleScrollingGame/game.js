@@ -80,8 +80,6 @@ var Board = (function () {
         if (this instanceof Board) {
             this.ctx.drawImage(obj.image, x, y, obj.width, obj.height);
             this.objlist.push([obj, x, y]);
-            console.log("Placed object");
-            console.log(this.objlist);
         }
         else {
             //var myCanvas = <HTMLCanvasElement>document.getElementById('game');
@@ -143,21 +141,16 @@ var Board = (function () {
         }
         if (e.keyCode == 37) {
             //keyCode 37 is left arrow
-            console.log("Left Arrow");
             this.clear();
         }
         if (e.keyCode == 40) {
             //keyCode 40 is down arrow
-            console.log("Down Arrow");
             boardobj.objlist[0][2]++;
         }
         if (e.keyCode == 39) {
-            //keyCode 39 is right arrow
-            console.log("Right Arrow");
         }
         if (e.keyCode == 38) {
             //keyCode 38 is up arrow
-            console.log("Up Arrow");
             boardobj.objlist[0][2]--;
         }
     };
