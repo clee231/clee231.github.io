@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Multi-page template</title>
+	<link rel="stylesheet" href="jquerymobile/jquery.mobile-1.4.5.min.css">
+	<link rel="stylesheet" href="jquerymobile/demos/_assets/css/jqm-demos.css">
+	<link rel="shortcut icon" href="jquerymobile/favicon.ico">
+	<script src="jquerymobile/demos/js/jquery.js"></script>
+	<script src="jquerymobile/demos/_assets/js/index.js"></script>
+	<script src="jquerymobile/jquery.mobile-1.4.5.min.js"></script>
+	<style>
+	#p1 {
+		background-color: DarkKhaki;
+	}
+	#p2 {
+		background-color: DarkSeaGreen;
+	}
+	</style>
+
+</head>
+
+<body>
+
+<!-- Start of first page: #data -->
+<div data-role="page" id="data">
+
+	<div data-role="header">
+		<h1>IT202 Final</h1>
+	</div><!-- /header -->
+<div data-role="navbar" data-grid="d">
+    <ul>
+        <li><a href="#data" class="ui-btn-active">Data</a></li>
+        <li><a href="#canvas">Canvas</a></li>
+        <li><a href="#image">Image</a></li>
+        <li><a href="#map">Map</a></li>
+        <li><a href="#notes">Notes</a></li>
+    </ul>
+</div><!-- /navbar -->
+	<div role="main" class="ui-content">
+		<p>Chicago employee names with department is <strong>IPRA</strong> and title is <strong>DEPUTY CHIEF ADMINISTRATOR</strong>: </p>	
+
+		<ul id='emplist'>
+		</ul>	
+	</div><!-- /content -->
+
+	<div data-role="footer" data-theme="a">
+		<h4>Chase Lee</h4>
+	</div><!-- /footer -->
+</div><!-- /page data -->
+
+<!-- Start of first page: #canvas -->
+<div data-role="page" id="canvas">
+
+	<div data-role="header">
+		<h1>IT202 Final - Canvas</h1>
+	</div><!-- /header -->
+<div data-role="navbar" data-grid="d">
+    <ul>
+        <li><a href="#data">Data</a></li>
+        <li><a href="#canvas" class="ui-btn-active">Canvas</a></li>
+        <li><a href="#image">Image</a></li>
+        <li><a href="#map">Map</a></li>
+        <li><a href="#notes">Notes</a></li>
+    </ul>
+</div><!-- /navbar -->
+	<div role="main" class="ui-content">
+	<p>The number of employees (in a canvas):</p>
+	<canvas id="canobj"></canvas>	
+
+</div><!-- /content -->
+
+	<div data-role="footer" data-theme="a">
+		<h4>Chase Lee</h4>
+	</div><!-- /footer -->
+</div><!-- /page canvas -->
+
+<!-- Start of first page: #image -->
+<div data-role="page" id="image">
+
+	<div data-role="header">
+		<h1>IT202 Final - Image</h1>
+	</div><!-- /header -->
+<div data-role="navbar" data-grid="d">
+    <ul>
+        <li><a href="#data">Data</a></li>
+        <li><a href="#canvas">Canvas</a></li>
+        <li><a href="#image" class="ui-btn-active">Image</a></li>
+        <li><a href="#map">Map</a></li>
+        <li><a href="#notes">Notes</a></li>
+    </ul>
+</div><!-- /navbar -->
+	<div role="main" class="ui-content">
+	<p>The ACM @ UIC logo and link!:</p>
+	<a href="https://acm.cs.uic.edu/" onClick="$(this).slideUp();" target="_blank"><img src="https://acm.cs.uic.edu/sites/default/files/chameleon_logo.gif" alt="ACM at UIC  Logo"></a>	
+
+</div><!-- /content -->
+
+	<div data-role="footer" data-theme="a">
+		<h4>Chase Lee</h4>
+	</div><!-- /footer -->
+</div><!-- /page image -->
+
+<!-- Start of first page: #map -->
+<div data-role="page" id="map">
+
+	<div data-role="header">
+		<h1>IT202 Final - Map</h1>
+	</div><!-- /header -->
+<div data-role="navbar" data-grid="d">
+    <ul>
+        <li><a href="#data">Data</a></li>
+        <li><a href="#canvas">Canvas</a></li>
+        <li><a href="#image">Image</a></li>
+        <li><a href="#map" class="ui-btn-active">Map</a></li>
+        <li><a href="#notes">Notes</a></li>
+    </ul>
+</div><!-- /navbar -->
+	<div role="main" class="ui-content">
+		<div id="mapmap" style="width: 500px; height:500px;"></div>	
+
+</div><!-- /content -->
+
+	<div data-role="footer" data-theme="a">
+		<h4>Chase Lee</h4>
+	</div><!-- /footer -->
+</div><!-- /page map -->
+
+<!-- Start of first page: #notes -->
+<div data-role="page" id="notes">
+
+	<div data-role="header">
+		<h1>IT202 Final - Notes</h1>
+	</div><!-- /header -->
+<div data-role="navbar" data-grid="d">
+    <ul>
+        <li><a href="#data">Data</a></li>
+        <li><a href="#canvas">Canvas</a></li>
+        <li><a href="#image">Image</a></li>
+        <li><a href="#map">Map</a></li>
+        <li><a href="#notes" class="ui-btn-active">Notes</a></li>
+    </ul>
+</div><!-- /navbar -->
+	<div role="main" class="ui-content">
+	<p id="p1"><a href="https://data.cityofchicago.org/resource/tt4n-kn4t.json?department=IPRA&job_titles=DEPUTY%20CHIEF%20ADMINISTRATOR">https://data.cityofchicago.org/resource/tt4n-kn4t.json?department=IPRA&job_titles=DEPUTY%20CHIEF%20ADMINISTRATOR</a></p>	
+	<p id="p2">The toughest part of this finals was the practical portion of the exam.  Also the time constraints in which we needed to complete this part.  Javascript is hard to debug when you are nervous about taking the final!!!</p>
+
+</div><!-- /content -->
+
+	<div data-role="footer" data-theme="a">
+		<h4>Chase Lee</h4>
+	</div><!-- /footer -->
+</div><!-- /page notes -->
+
+<script>
+
+var emp;
+
+function empdata() {
+var query = "https://data.cityofchicago.org/resource/tt4n-kn4t.json?department=IPRA&job_titles=DEPUTY%20CHIEF%20ADMINISTRATOR";
+	$.get(query, function(data) {
+			$("#emplist").empty();
+		$.each(data, function(index, item) {
+			$("#emplist").append("<li>"+ item['name'] +"</li>");
+		}); // each
+		emp = data;
+	});// get
+}
+
+function canvasemp() {
+	if (emp == null) {
+		empdata();
+	}
+	var canvas = document.getElementById("canobj");
+	var ctx = canvas.getContext("2d");
+	ctx.font = "30px Arial";
+	if(emp.length % 2 == 1) {
+		ctx.fillStyle="red";
+	}else {
+		ctx.fillStyle="blue";
+	}
+	ctx.fillText(emp.length,10,50);
+}
+
+function initMap() {
+        var myLatLng = {lat: 41.871979, lng: -87.649221};
+		// 41.871979, -87.649221
+        var map = new google.maps.Map(document.getElementById('mapmap'), {
+          zoom: 12,
+          center: myLatLng
+        });
+		var con = "<h1>UIC</h1>";
+		var infowindow = new google.maps.InfoWindow({
+		    content: con
+		  });
+
+        var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          title: 'UIC'
+        });
+
+marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+      }
+
+
+$(document).ready(function() {
+	console.log("Document ready!");
+	empdata();
+	$('#data').on("pagecontainerload", function(event,ui) {
+	console.log("PageContainerLoad!");
+		empdata();	
+	});// on
+
+	$( ":mobile-pagecontainer" ).on( "pagecontainershow", function( event, ui ) {
+		switch($.mobile.activePage.attr('id')) {
+			case 'data':
+				console.log('I should query...');
+				empdata();
+				break;
+			case 'canvas':
+				canvasemp();
+				break;
+			case 'image':
+				//$('a').slideDown();
+				break;
+			case 'map':
+				initMap();
+				break;
+			case 'notes':
+				break;
+		}
+	});
+	$('#p2').click(function() {
+		$('#p2').css('color', 'red');
+});
+}); // ready
+</script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?callback=initMap">
+    </script>
+
+
+
+</body>
+</html>
+
