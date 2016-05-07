@@ -111,7 +111,7 @@ var Board = (function () {
         var po = this.placeObj;
         var myCtx = this.ctx;
         myCtx.fillStyle = "#FF0000";
-        myCtx.fillRect(0, 0, (this.width / 3) * this.lives, 1);
+        myCtx.fillRect(0, 0, (400 / 3) * this.lives, 1);
         myCtx.fillStyle = "#FFFFFF";
         var ypos = ((centerHeight / 3) - (this.innerSize / 2));
         //console.log("ypos: " + ypos);
@@ -244,5 +244,5 @@ $(document).ready(function () {
     console.log("Document Ready!");
     var upInterval = setInterval(boardobj.update, 16);
     boardobj.clear();
-    $(document).on('keypress', boardobj.handleInput);
+    $(document).on('keydown', boardobj.handleInput);
 });
